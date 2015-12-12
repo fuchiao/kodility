@@ -22,18 +22,17 @@ def longest_path_length(A, B):
                     removePath.append(B.index(j))
 
         # remove path from list, and count path length
+        pathAdd = 1
         for j in removePath:
             A[j] = -1
             B[j] = -1
-        pathLength += 2
+            if removePath.count(j) == 1:
+                pathAdd = 2
+        pathLength += pathAdd
 
         # no path exists
         if len(A) == A.count(-1):
             break
-
-    # only one path in the lastest remove list
-    if len(removePath) == 1:
-        pathLength -= 1
 
     # the last removed path is the best place for camera
     return pathLength, removePath[-1]
@@ -51,4 +50,6 @@ def solution(A, B, K):
 if __name__ == "__main__":
     # test case from task description
     assert solution([5,1,0,2,7,0,6,6,1], [1,0,7,4,2,6,8,3,9], 2) == 2, "Something Wrong"
+    assert solution([0], [1], 0) == 1, "Something Wrong"
+    assert solution([0, 2], [1, 3], 0) == 1, "Something Wrong"
     print("OK")
