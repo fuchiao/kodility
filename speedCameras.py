@@ -6,6 +6,7 @@ def longest_path_length(A, B):
     pathLength = 0
 
     # iter point list for removing tip path, until no path in the map
+    removePath = []
     for i in points:
         # init remaining point list
         remainingPoints = set(A+B)
@@ -35,15 +36,20 @@ def longest_path_length(A, B):
             break
 
     # the last removed path is the best place for camera
-    return pathLength, removePath[-1]
+    if len(removePath) > 0:
+        return pathLength, removePath[-1]
+    else:
+        return 0, -1
         
 def solution(A, B, K):
     ret = 0
     while K >= 0:
         ret, cameraPath = longest_path_length(A.copy(), B.copy())
-        A[cameraPath] = -1
-        B[cameraPath] = -1
+        if cameraPath >= 0:
+            A[cameraPath] = -1
+            B[cameraPath] = -1
         K -= 1
+
     return ret
 
 
@@ -51,5 +57,6 @@ if __name__ == "__main__":
     # test case from task description
     assert solution([5,1,0,2,7,0,6,6,1], [1,0,7,4,2,6,8,3,9], 2) == 2, "Something Wrong"
     assert solution([0], [1], 0) == 1, "Something Wrong"
+    assert solution([0], [1], 1) == 0, "Something Wrong"
     assert solution([0, 2], [1, 3], 0) == 1, "Something Wrong"
     print("OK")
